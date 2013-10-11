@@ -9,7 +9,7 @@
 
 3. Download and extract http://icculus.org/physfs/downloads/physfs-2.0.3.tar.bz2 to ./libs/physfs
 3.a cd libs/physfs
-3.b cmake -D CMAKE_TOOLCHAIN_FILE=../../cmake_cygwin_toolchain.cmake .
+3.b cmake -D CMAKE_TOOLCHAIN_FILE=../../cmake_cygwin.toolchain .
 3.c make
 
 4. cross compile mono
@@ -30,7 +30,7 @@
 
 
 // NOTE: this will fail!
-7. cmake -D CMAKE_TOOLCHAIN_FILE=cmake_cygwin_toolchain.cmake . 
+7. cmake -D CMAKE_TOOLCHAIN_FILE=cmake_cygwin.toolchain . 
 
 NOW add the following lines to CMakeCache.txt
 BEGIN<<<---------------------------------------------------
