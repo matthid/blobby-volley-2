@@ -1,0 +1,55 @@
+
+1. Install cygwin (or run linux)
+2. Install cmake, make, automake, libtool, zlib, and the "i686-pc-mingw32" cross-compiler toolchain
+
+3. extract libzip to ./libs/libzip
+3.a cd libs/libzip
+3.b ./configure --host=i686-pc-mingw32
+3.c make
+
+3. Download and extract http://icculus.org/physfs/downloads/physfs-2.0.3.tar.bz2 to ./libs/physfs
+3.a cd libs/physfs
+3.b cmake -D CMAKE_TOOLCHAIN_FILE=../../cmake_cygwin_toolchain.cmake .
+3.c make
+
+4. cross compile mono
+4.a cd libs
+4.b git clone https://github.com/mono/mono.git
+4.c cd mono
+4.d (checkout any tag/branch you like)
+4.e ./autogen.sh --host=i686-pc-mingw32
+(=> OR USE PRECOMPILED MONO BECAUSE THE MONO PEOPLE SUCK AT PROVIDING PACKAGES WHICH COMPILE ON WINDOWS)
+
+5. Download and extract "http://www.libsdl.org/download-1.2.php" (1.2.15) to "libs/sdlold"
+5.a cd libs/sdlold
+5.b ./configure --host=i686-pc-mingw32
+5.c make
+
+6. Download boost to ./libs/boost (or use the one provided by cygwin)
+
+
+
+// NOTE: this will fail!
+7. cmake -D CMAKE_TOOLCHAIN_FILE=cmake_cygwin_toolchain.cmake . 
+
+NOW add the following lines to CMakeCache.txt
+BEGIN<<<---------------------------------------------------
+
+BOOST_ROOT:PATH=/cygdrive/c/projects/blobby2mono/libs/boost
+MONO_INCLUDE_DIR:FILEPATH=/cygdrive/c/Program Files (x86)/Mono-3.2.3/include/mono-2.0
+MONO_LIBRARY:FILEPATH=mono
+PHYSFS_INCLUDE_DIR:PATH=/cygdrive/c/projects/blobby2mono/libs/physfs
+PHYSFS_LIBRARY:FILEPATH=physfs
+SDLMAIN_LIBRARY:FILEPATH=SDLmain
+SDL_INCLUDE_DIR:PATH=/cygdrive/c/projects/blobby2mono/libs/include/sdl
+SDL_LIBRARY:STRING=SDL
+
+--------------------------------------------------->>>END
+NOTE: use
+MONO_LIBRARY:FILEPATH=monosgen-2.0
+when using the precompiled mono and add \"-L/cygdrive/c/Program Files (x86)/Mono-3.2.3/lib\" \"-L/cygdrive/c/Program Files (x86)/Mono-3.2.3/bin\"
+
+
+8. cmake -D CMAKE_TOOLCHAIN_FILE=cmake_cygwin_toolchain.cmake . 
+
+9. make

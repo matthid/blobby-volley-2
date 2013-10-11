@@ -11,13 +11,15 @@
 	<var name="right_blobby_color_g" value="0"/>
 	<var name="right_blobby_color_b" value="0"/>
 	<var name="right_blobby_oscillate" value="false"/>
-	<var name="show_shadow" value="false"/>
-	<var name="left_script_name" value="hyp014"/>
-	<var name="right_script_name" value="reduced"/>
-	<var name="left_player_human" value="true"/>
-	<var name="right_player_human" value="true"/>
-	<var name="left_player_name" value="Left Player"/>
-	<var name="right_player_name" value="Right Player"/>
+	<var name="show_shadow" value="true"/>
+	<var name="left_script_name" value="UnionPort.dll"/>
+	<var name="right_script_name" value="Union"/>
+	<var name="left_player_human" value="false"/>
+	<var name="right_player_human" value="false"/>
+	<var name="left_player_name" value="Imba"/>
+	<var name="right_player_name" value="UnionPort"/>
+	<var name="left_mono_bot" value="true"/>
+	<var name="right_mono_bot" value="false"/>
 	<var name="gamefps" value="120"/>
 	<var name="global_volume" value="1.000000"/>
 	<var name="mute" value="false"/>

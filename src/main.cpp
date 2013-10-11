@@ -126,6 +126,7 @@ void setupPHYSFS()
 extern "C"
 int main(int argc, char* argv[])
 {
+	printf("Starting game\n");
 	FileSystem filesys(argv[0]);
 	setupPHYSFS();
 
@@ -166,6 +167,7 @@ int main(int argc, char* argv[])
 	#endif
 	#endif
 
+	printf("Starting UI\n");
 	try
 	{
 		UserConfig gameConfig;
@@ -181,6 +183,7 @@ int main(int argc, char* argv[])
 			rmanager = RenderManager::createRenderManagerGL2D();
 		else
 		{
+			printf("Unknown Renderer\n");
 			std::cerr << "Warning: Unknown renderer selected!";
 			std::cerr << "Falling back to OpenGL" << std::endl;
 			rmanager = RenderManager::createRenderManagerGL2D();
@@ -262,6 +265,9 @@ int main(int argc, char* argv[])
 	}
 	catch (std::exception& e)
 	{
+		printf("Error: ");
+		printf(e.what());
+		printf("\n");
 		std::cerr << e.what() << std::endl;
 		if (rmanager)
 			rmanager->deinit();
@@ -271,6 +277,7 @@ int main(int argc, char* argv[])
 		exit (EXIT_FAILURE);
 	}
 
+	printf("Exiting...\n");
 	deinit();
 	exit(EXIT_SUCCESS);
 }

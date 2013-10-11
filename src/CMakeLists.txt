@@ -6,6 +6,9 @@ add_subdirectory(blobnet)
 add_definitions(-DTIXML_USE_STL)
 include_directories(.)
 
+SET(CMAKE_C_FLAGS "-g ${CMAKE_C_FLAGS}")
+SET(CMAKE_CXX_FLAGS "-g ${CMAKE_CXX_FLAGS}")
+
 set(common_SRC	
 	Global.h
 	BlobbyDebug.cpp BlobbyDebug.h
@@ -44,6 +47,8 @@ set (blobby_SRC ${common_SRC}
 	RenderManagerGL2D.cpp RenderManagerGL2D.h
 	RenderManagerGP2X.cpp RenderManagerGP2X.h
 	RenderManagerSDL.cpp RenderManagerSDL.h
+	MonoLoader.cpp MonoLoader.h
+	MonoInputSource.cpp MonoInputSource.h
 	ScriptedInputSource.cpp ScriptedInputSource.h	
 	BotAPICalculations.cpp BotAPICalculations.h
 	SoundManager.cpp SoundManager.h
@@ -69,11 +74,20 @@ set (blobby-server_SRC ${common_SRC}
 find_package(Boost REQUIRED)
 find_package(PhysFS REQUIRED)
 find_package(SDL REQUIRED)
+find_library(MONO_INCLUDE_DIR mono/jit/jit.h)
 find_package(OpenGL)
 
+find_library(MONO_LIBRARY libmono-2.0.a)
+if (OPENGL_FOUND)
+	add_definitions(-DHAVE_LIBGL)
+else ()
+	
+endif (OPENGL_FOUND)
+	set(OPENGL_INCLUDE_DIR ".")
 include_directories(
 	${Boost_INCLUDE_DIR} ${PHYSFS_INCLUDE_DIR}
 	${SDL_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR}
+	${MONO_INCLUDE_DIR}
 )
 
 if (OPENGL_FOUND)
@@ -86,12 +100,25 @@ else (CMAKE_SYSTEM_NAME STREQUAL Windows)
 	set(RAKNET_LIBRARIES raknet)
 endif (CMAKE_SYSTEM_NAME STREQUAL Windows)
 
+# set(LINK_FLAGS "-mno-cygwin -mms-bitfields -mwindows -L/usr/local/lib -lmono-2.0 -lws2_32 -lpsapi -lole32 -lwinmm -loleaut32 -ladvapi32 -lversion")
+# -mno-cygwin -mwindows -L/usr/local/lib
+# set(CMAKE_EXE_LINKER_FLAGS "-v -L/cygdrive/c/cygwin/usr/local/lib -mwindows -lSDLmain -lSDL -lm -luser32 -lgdi32 -lwinmm -mms-bitfields -lmono-2.0 -lws2_32 -lpsapi -lole32 -loleaut32 -ladvapi32 -lversion")
+set(CMAKE_EXE_LINKER_FLAGS "-g -m32 -mms-bitfields -mwindows -static \"-L/cygdrive/c/Program Files (x86)/Mono-3.2.3/lib\" \"-L/cygdrive/c/Program Files (x86)/Mono-3.2.3/bin\" -L/cygdrive/c/projects/blobby2mono/libs/sdlold/build/.libs -L/cygdrive/c/projects/blobby2mono/libs/libzip/lib/.libs -L/cygdrive/c/projects/blobby2mono -L/cygdrive/c/projects/blobby2mono/libs/physfs")
+set(LINK_SEARCH_END_STATIC)
+
+set(CMAKE_EXE_LINK_DYNAMIC_C_FLAGS)       # remove -Wl,-Bdynamic
+set(CMAKE_EXE_LINK_DYNAMIC_CXX_FLAGS)
+set(CMAKE_SHARED_LIBRARY_C_FLAGS)         # remove -fPIC
+set(CMAKE_SHARED_LIBRARY_CXX_FLAGS)
+set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS)    # remove -rdynamic
+set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
+
 add_executable(blobby ${blobby_SRC})
-target_link_libraries(blobby lua raknet blobnet tinyxml ${RAKNET_LIBRARIES} ${PHYSFS_LIBRARY} ${SDL_LIBRARY} ${OPENGL_LIBRARIES})
+target_link_libraries(blobby lua raknet blobnet tinyxml ${RAKNET_LIBRARIES}  ${PHYSFS_LIBRARY} ${SDL_LIBRARY} ${OPENGL_LIBRARIES} ${MONO_LIBRARY} zip z stdc++ wsock32 ws2_32 psapi ole32 winmm oleaut32 advapi32 version)
 
 if (UNIX)
 	add_executable(blobby-server ${blobby-server_SRC})
-	target_link_libraries(blobby-server lua raknet tinyxml ${RAKNET_LIBRARIES} ${PHYSFS_LIBRARY} ${SDL_LIBRARY})
+	target_link_libraries(blobby-server lua raknet tinyxml ${RAKNET_LIBRARIES} ${PHYSFS_LIBRARY} ${SDL_LIBRARY} stdc++ ws2_32 zip z)
 endif (UNIX)
 
 if (CMAKE_SYSTEM_NAME STREQUAL Windows)

@@ -138,6 +138,8 @@ class RenderManagerGL2D : public RenderManager
 		GLuint mCurrentTexture;
 		std::set<unsigned int> mCurrentFlags;
 };
+#else
 
+#include "RenderManager.h"
 
 #endif

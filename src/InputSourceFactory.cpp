@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "IUserConfigReader.h"
 #include "LocalInputSource.h"
 #include "ScriptedInputSource.h"
+#include "MonoInputSource.h"
 
 boost::shared_ptr<InputSource> InputSourceFactory::createInputSource( boost::shared_ptr<IUserConfigReader> config, PlayerSide side )
 {
@@ -43,8 +44,14 @@ boost::shared_ptr<InputSource> InputSourceFactory::createInputSource( boost::sha
 		} 
 		else 
 		{
-			return boost::make_shared<ScriptedInputSource>("scripts/" + config->getString(prefix + "_script_name"), 
-																side, config->getInteger(prefix + "_script_strength"));
+			std::string scriptName = config->getString(prefix + "_script_name");
+			int difficulty = config->getInteger(prefix + "_script_strength");
+			if (config->getBool(prefix + "_mono_bot")) {			
+				return boost::make_shared<MonoInputSource>(scriptName, side, difficulty);
+			} else {
+				return boost::make_shared<ScriptedInputSource>("scripts/" +
+					scriptName, side, difficulty);
+			}
 		}
 	} catch (std::exception& e)
 	{
