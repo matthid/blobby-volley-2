@@ -37,7 +37,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Mono.Simd">
-      <HintPath>..\..\..\Fremde_Projekte\SVN_Sourceforge\Blobby Volley 2\tags\Blobby Volley 2 Version 1.0 RC 1\mono\lib\mono\4.5\Mono.Simd.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Mono-3.2.3\lib\mono\4.5\Mono.Simd.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

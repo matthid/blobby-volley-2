@@ -9,9 +9,10 @@ namespace BlobbyBotloader
     using System.Reflection;
     using System.Runtime.InteropServices;
     using System.Threading;
-	using System.Security;
-	using Mono.Simd;
+    using System.Security;
+    using Mono.Simd;
 	
+
     public enum PlayerSide : int
 	{
 		NO_PLAYER = -1,
@@ -547,7 +548,7 @@ namespace BlobbyBotloader
 					} catch (FileNotFoundException) {
 						error = "assemblyFile {0} is not found.";
 					} catch (SecurityException) {
-						error = "The caller does not have path discovery permissio ({0})n.";
+						error = "The caller does not have path discovery permission ({0}).";
 					} catch (BadImageFormatException) {
 						error = "assemblyFile {0} is not a valid assembly. ";
 					} catch (FileLoadException) {

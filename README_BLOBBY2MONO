@@ -1,16 +1,18 @@
 
 1. Install cygwin (or run linux)
-2. Install cmake, make, automake, libtool, zlib, and the "i686-pc-mingw32" cross-compiler toolchain
+1.a Install cmake, make, automake, libtool, zlib, and the "i686-pc-mingw32" cross-compiler toolchain
 
-3. extract libzip to ./libs/libzip
-3.a cd libs/libzip
-3.b ./configure --host=i686-pc-mingw32
-3.c make
+2. extract libzip to ./libs/libzip
+2.a cd libs/libzip
+2.b ./configure --host=i686-pc-mingw32
+2.c make
 
 3. Download and extract http://icculus.org/physfs/downloads/physfs-2.0.3.tar.bz2 to ./libs/physfs
 3.a cd libs/physfs
 3.b cmake -D CMAKE_TOOLCHAIN_FILE=../../cmake_cygwin.toolchain .
-3.c make
+3.c Make sure everything in the CMakeCache.txt is prefixed with "i686-pc-mingw32-"
+3.d make
+
 
 4. cross compile mono
 4.a cd libs
@@ -48,6 +50,9 @@ SDL_LIBRARY:STRING=SDL
 NOTE: use
 MONO_LIBRARY:FILEPATH=monosgen-2.0
 when using the precompiled mono and add \"-L/cygdrive/c/Program Files (x86)/Mono-3.2.3/lib\" \"-L/cygdrive/c/Program Files (x86)/Mono-3.2.3/bin\"
+// This is a bit out of date we use 
+MONO_LIBRARY:FILEPATH=mono //with the official mono.lib
+and add -L/path/to/blobby
 
 
 8. cmake -D CMAKE_TOOLCHAIN_FILE=cmake_cygwin_toolchain.cmake . 
